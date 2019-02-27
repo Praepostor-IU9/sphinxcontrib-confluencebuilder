@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    :copyright: Copyright 2016-2018 by the contributors (see AUTHORS file).
+    :copyright: Copyright 2016-2019 by the contributors (see AUTHORS file).
     :license: BSD-2-Clause, see LICENSE for details.
 """
 
@@ -12,14 +12,15 @@ import os
 import unittest
 
 class TestConfluenceConfig(unittest.TestCase):
-    @classmethod
-    def setUpClass(self):
+    def run(self, result=None):
         # prepare a dummy application; no need to actually build
         config = { 'extensions': EXT_NAME }
         self.test_dir = os.path.dirname(os.path.realpath(__file__))
         mock_ds = os.path.join(self.test_dir, 'dataset-common')
         doc_dir, doctree_dir = _.prepareDirectories('config-dummy')
-        self.app = _.prepareSphinx(mock_ds, doc_dir, doctree_dir, config)
+
+        with _.prepareSphinx(mock_ds, doc_dir, doctree_dir, config) as app:
+            self.app = app
 
     def test_emptyconfig(self):
         builder = ConfluenceBuilder(self.app)
